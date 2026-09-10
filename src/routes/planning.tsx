@@ -52,8 +52,8 @@ function AnimatedMetric({ label, value, detail, accent = "default" }: { label: s
 }
 
 const plannerRows = [
-  { metric: "Compute time", baseline: "852 ms", hybrid: "42.2 ms", frenet: "1.4 ms", adaptive: "< 60 ms" },
-  { metric: "Worst-case nodes", baseline: "28,779", hybrid: "6,320", frenet: "60", adaptive: "< 1,200" },
+  { metric: "Compute time", baseline: "852 ms", hybrid: "42.2 ms", frenet: "1.4 ms", adaptive: "10.7 ms mean, 305.6 ms max" },
+  { metric: "Worst-case nodes", baseline: "28,779", hybrid: "5,956", frenet: "7", adaptive: "< 1,200" },
   { metric: "Path length", baseline: "31.8 m", hybrid: "20.4 m", frenet: "19.6 m", adaptive: "18.9 m" },
   { metric: "Safety margin", baseline: "0.7 m", hybrid: "1.2 m", frenet: "1.4 m", adaptive: "1.3 m" },
   { metric: "Use case", baseline: "Fallback", hybrid: "Dense field", frenet: "Lane-level", adaptive: "Cascade" },
@@ -87,11 +87,10 @@ function PlanningPage() {
           </div>
 
           <div className="grid gap-5 md:grid-cols-3">
-            <AnimatedMetric label="Kinematic feasibility" value="4.1m" detail="Every search edge respects bicycle-model turning limits, so infeasible arcs are pruned before path scoring." accent="safe" />
-            <AnimatedMetric label="Cross-track error" value="0.329m" detail="Mean tracking error remains below the controller tolerance envelope across the measured closed-loop simulation set." accent="default" />
-            <AnimatedMetric label="Planner cascade" value="1.4ms" detail="Frenet is used for lane-level trajectories; Hybrid A* is reserved for dense, unstructured field cases with weak centerlines." accent="warning" />
-          </div>
-        </motion.div>
+  <AnimatedMetric label="Kinematic feasibility" value="4.1m" detail="Every search edge respects bicycle-model turning limits, so infeasible arcs are pruned before path scoring." accent="safe" />
+  <AnimatedMetric label="Planning page" value="0.329m" detail="Mean tracking error remains below the controller tolerance envelope across the measured closed-loop simulation set." accent="default" />
+  <AnimatedMetric label="Planner cascade" value="1.4ms" detail="Frenet is used for lane-level trajectories; Hybrid A* is reserved for dense, unstructured field cases with weak centerlines." accent="warning" />
+</div>
 
         <motion.div
           initial={{ opacity: 0, y: 18 }}
