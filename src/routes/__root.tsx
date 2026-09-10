@@ -4,6 +4,7 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
+  useLocation,
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
@@ -116,10 +117,13 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const location = useLocation();
 
   return (
     <QueryClientProvider client={queryClient}>
-      <AppShell><Outlet /></AppShell>
+      <AppShell showLimitations={location.pathname === "/performance"}>
+        <Outlet />
+      </AppShell>
     </QueryClientProvider>
   );
 }
