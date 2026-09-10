@@ -1,4 +1,4 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useLocation } from "@tanstack/react-router";
 import {
   Activity,
   ArrowRight,
@@ -29,6 +29,8 @@ const navItems = [
 
 export function AppShell({ children }: { children: ReactNode }) {
   const [scrolled, setScrolled] = useState(false);
+  const location = useLocation();
+  const isPerformancePage = location.pathname === "/performance";
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -76,62 +78,65 @@ export function AppShell({ children }: { children: ReactNode }) {
       </header>
       <main>{children}</main>
 
-      <section className="mx-auto max-w-[1460px] px-4 pb-0 pt-8 md:px-4">
-        <div className="mb-4 text-center">
-          <div className="mb-2 flex items-center justify-center gap-2 text-[0.62rem] font-semibold uppercase tracking-[0.18em] text-primary/80">
-            <span className="h-px w-8 bg-primary/50" />
-            platform limits
-            <span className="h-px w-8 bg-primary/50" />
-          </div>
-          <h2 className="font-display text-2xl font-semibold tracking-[-0.05em] text-foreground md:text-3xl">Limitations & Scope</h2>
-        </div>
-
-        <div className="relative overflow-hidden rounded-[1.2rem] border border-white/8 bg-[linear-gradient(180deg,rgba(15,23,42,0.7),rgba(9,13,24,0.9))] shadow-[0_10px_30px_rgba(2,6,23,0.35)]">
-          <div className="rounded-[1.2rem] border border-white/5 bg-slate-950/40">
-            <div className="flex items-center justify-between border-b border-border/60 px-5 py-3.5">
-              <span className="text-[0.62rem] font-semibold uppercase tracking-[0.16em] text-muted-foreground">Current scope</span>
-              <span className="inline-flex items-center rounded-full border border-primary/10 bg-primary/5 px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[0.18em] text-primary/90">Scope</span>
+      {/* Limitations section conditionally rendered only on /performance page */}
+      {isPerformancePage && (
+        <section className="mx-auto max-w-[1460px] px-4 pb-0 pt-8 md:px-4">
+          <div className="mb-4 text-center">
+            <div className="mb-2 flex items-center justify-center gap-2 text-[0.62rem] font-semibold uppercase tracking-[0.18em] text-primary/80">
+              <span className="h-px w-8 bg-primary/50" />
+              platform limits
+              <span className="h-px w-8 bg-primary/50" />
             </div>
-
-            <Accordion type="single" collapsible className="w-full">
-              {[
-                {
-                  value: "agents",
-                  title: "Agents in all scenarios are non-cooperative",
-                  icon: Users,
-                  description: "Agents in all scenarios are non-cooperative — they follow fixed scripts and do not avoid the ego vehicle. Every scenario here is a worst-case test where the entire avoidance burden falls on the ego vehicle.",
-                },
-                {
-                  value: "latency",
-                  title: "Worst-case replan latency is bounded, not unbounded",
-                  icon: Clock3,
-                  description: "Worst-case replan latency (305.6ms in Dense Market) exceeds the 100ms budget, but is bounded — an expansion cap limits the search, and on failure the previous path is held for one cycle. A stale path for 100ms is safer than no path.",
-                },
-                {
-                  value: "matlab",
-                  title: "Base MATLAB implementation",
-                  icon: Code2,
-                  description: "Runs entirely on base MATLAB — no toolboxes required. Every algorithm is a standalone function that can become a Simulink MATLAB Function block directly.",
-                },
-              ].map(({ value, title, description, icon: Icon }) => (
-                <AccordionItem key={value} value={value} className="border-b border-border/60 last:border-b-0">
-                  <AccordionTrigger className="group flex w-full items-center gap-3 px-5 py-4 text-left text-sm font-medium text-foreground transition-all duration-200 ease-out hover:no-underline data-[state=open]:bg-primary/[0.03] data-[state=open]:text-foreground">
-                    <span className="flex h-8 w-8 items-center justify-center rounded-md border border-primary/15 bg-primary/5 text-primary shadow-[inset_0_0_18px_rgba(125,211,252,0.06)] transition-all duration-200 ease-out group-hover:border-primary/30 group-hover:bg-primary/8">
-                      <Icon className="h-4 w-4" aria-hidden="true" />
-                    </span>
-                    <span className="flex-1 text-left">{title}</span>
-                  </AccordionTrigger>
-                  <AccordionContent className="px-5 pb-5 text-sm leading-6 text-muted-foreground">
-                    <div className="ml-11 rounded-xl border-l border-primary/15 pl-4 text-[0.93rem] text-muted-foreground/90">
-                      {description}
-                    </div>
-                  </AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
+            <h2 className="font-display text-2xl font-semibold tracking-[-0.05em] text-foreground md:text-3xl">Limitations & Scope</h2>
           </div>
-        </div>
-      </section>
+
+          <div className="relative overflow-hidden rounded-[1.2rem] border border-white/8 bg-[linear-gradient(180deg,rgba(15,23,42,0.7),rgba(9,13,24,0.9))] shadow-[0_10px_30px_rgba(2,6,23,0.35)]">
+            <div className="rounded-[1.2rem] border border-white/5 bg-slate-950/40">
+              <div className="flex items-center justify-between border-b border-border/60 px-5 py-3.5">
+                <span className="text-[0.62rem] font-semibold uppercase tracking-[0.16em] text-muted-foreground">Current scope</span>
+                <span className="inline-flex items-center rounded-full border border-primary/10 bg-primary/5 px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[0.18em] text-primary/90">Scope</span>
+              </div>
+
+              <Accordion type="single" collapsible className="w-full">
+                {[
+                  {
+                    value: "agents",
+                    title: "Agents in all scenarios are non-cooperative",
+                    icon: Users,
+                    description: "Agents in all scenarios are non-cooperative — they follow fixed scripts and do not avoid the ego vehicle. Every scenario here is a worst-case test where the entire avoidance burden falls on the ego vehicle.",
+                  },
+                  {
+                    value: "latency",
+                    title: "Worst-case replan latency is bounded, not unbounded",
+                    icon: Clock3,
+                    description: "Worst-case replan latency (305.6ms in Dense Market) exceeds the 100ms budget, but is bounded — an expansion cap limits the search, and on failure the previous path is held for one cycle. A stale path for 100ms is safer than no path.",
+                  },
+                  {
+                    value: "matlab",
+                    title: "Base MATLAB implementation",
+                    icon: Code2,
+                    description: "Runs entirely on base MATLAB — no toolboxes required. Every algorithm is a standalone function that can become a Simulink MATLAB Function block directly.",
+                  },
+                ].map(({ value, title, description, icon: Icon }) => (
+                  <AccordionItem key={value} value={value} className="border-b border-border/60 last:border-b-0">
+                    <AccordionTrigger className="group flex w-full items-center gap-3 px-5 py-4 text-left text-sm font-medium text-foreground transition-all duration-200 ease-out hover:no-underline data-[state=open]:bg-primary/[0.03] data-[state=open]:text-foreground">
+                      <span className="flex h-8 w-8 items-center justify-center rounded-md border border-primary/15 bg-primary/5 text-primary shadow-[inset_0_0_18px_rgba(125,211,252,0.06)] transition-all duration-200 ease-out group-hover:border-primary/30 group-hover:bg-primary/8">
+                        <Icon className="h-4 w-4" aria-hidden="true" />
+                      </span>
+                      <span className="flex-1 text-left">{title}</span>
+                    </AccordionTrigger>
+                    <AccordionContent className="px-5 pb-5 text-sm leading-6 text-muted-foreground">
+                      <div className="ml-11 rounded-xl border-l border-primary/15 pl-4 text-[0.93rem] text-muted-foreground/90">
+                        {description}
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
+            </div>
+          </div>
+        </section>
+      )}
 
       <footer className="site-footer relative mt-8 overflow-hidden border-t border-border px-4 pb-5 pt-0 text-xs text-muted-foreground">
         <div aria-hidden="true" className="site-footer__glow" />
