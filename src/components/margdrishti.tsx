@@ -406,11 +406,11 @@ export function Pipeline() {
 }
 
 export const scenarioVideoPaths = {
-  "Village Road": "/videos/village-road.mp4",
-  "Urban Intersection": "/videos/urban-intersection.mp4",
-  "Highway Merge": "/videos/highway-merge.mp4",
-  "Dense Market": "/videos/dense-market.mp4",
-  "Cattle Crossing": "/videos/cattle-crossing.mp4",
+  "Village Road": "/videos/video-1.mp4",
+  "Urban Intersection": "/videos/video-2.mp4",
+  "Highway Merge": "/videos/video-3.mp4",
+  "Dense Market": "/videos/video-4.mp4",
+  "Cattle Crossing": "/videos/video-5.mp4",
 } as const;
 
 export function ScenarioVideoPlayer({
