@@ -4,23 +4,27 @@ import {
   ArrowRight,
   Camera,
   CarFront,
+  Clock3,
+  Code2,
   Cpu,
   Gauge,
   Map,
   Radar,
   Route as RouteIcon,
   ScanLine,
+  ShieldAlert,
+  Users,
 } from "lucide-react";
 import { motion, useInView, useReducedMotion } from "framer-motion";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 const navItems = [
-  { to: "/" as const, label: "Dashboard", icon: Gauge },
-  { to: "/scenarios" as const, label: "Scenarios", icon: Map },
-  { to: "/perception" as const, label: "Perception", icon: ScanLine },
-  { to: "/planning" as const, label: "Planning", icon: RouteIcon },
-  { to: "/performance" as const, label: "Performance", icon: Activity },
+  { to: "/" as const, label: "Dashboard" },
+  { to: "/scenarios" as const, label: "Scenarios" },
+  { to: "/perception" as const, label: "Perception" },
+  { to: "/planning" as const, label: "Planning" },
+  { to: "/performance" as const, label: "Performance" },
 ];
 
 export function AppShell({ children }: { children: ReactNode }) {
@@ -38,20 +42,19 @@ export function AppShell({ children }: { children: ReactNode }) {
       <header className="sticky top-0 z-50 px-2 pt-2 md:px-4">
         <div className="mx-auto max-w-[1460px]">
           <div
-            className={`flex items-center justify-between gap-2 rounded-full border border-white/10 bg-[#0b1220]/75 px-1.5 py-1.5 shadow-[0_18px_48px_rgba(2,6,23,0.68),0_0_0_1px_rgba(148,163,184,0.08)] backdrop-blur-2xl transition-all duration-200 ease-out ${
-              scrolled ? "bg-[#0b1220]/88 shadow-[0_22px_62px_rgba(2,6,23,0.8),0_0_0_1px_rgba(148,163,184,0.12)]" : "bg-[#0b1220]/75"
+            className={`flex items-center justify-between gap-3 rounded-full border border-white/10 bg-[#050d1a]/90 px-2 py-2.5 shadow-[0_22px_60px_rgba(2,6,23,0.7)] backdrop-blur-2xl transition-all duration-200 ease-out ${
+              scrolled ? "bg-[#050d1a]/95" : "bg-[#050d1a]/90"
             }`}
           >
-            <Link to="/" className="group flex min-w-fit items-center gap-3 rounded-full pl-2 pr-2.5 py-1.5 transition-transform duration-200 ease-out hover:scale-[1.01]" aria-label="MARGDRISHTI AI dashboard">
-              <span className="brand-mark"><RouteIcon aria-hidden="true" size={20} /></span>
-              <span>
-                <span className="block font-display text-[0.94rem] font-bold tracking-[0.08em] text-foreground">MARGDRISHTI <span className="text-primary">AI</span></span>
-                <span className="hidden text-[9px] uppercase tracking-[0.18em] text-muted-foreground sm:block">Autonomous systems lab</span>
+            <Link to="/" className="group flex min-w-fit items-center gap-2.5 rounded-full py-1.5 pl-1 pr-2 transition-transform duration-200 ease-out hover:scale-[1.01]" aria-label="MARGDRISHTI AI dashboard">
+              <span className="brand-mark h-8 w-8 text-[0.9rem]">
+                <RouteIcon aria-hidden="true" size={16} />
               </span>
+              <span className="font-display text-[0.96rem] font-semibold tracking-[-0.04em] text-foreground">MARGDRISHTI <span className="text-primary">AI</span></span>
             </Link>
 
-            <nav className="nav-scroll mx-auto flex w-full max-w-[640px] flex-1 items-center justify-center gap-0.5 overflow-x-auto rounded-full px-1 py-1" aria-label="Primary navigation">
-              {navItems.map(({ to, label, icon: Icon }) => (
+            <nav className="nav-scroll mx-auto flex max-w-[740px] items-center justify-center gap-1 overflow-x-auto rounded-full px-1 py-1" aria-label="Primary navigation">
+              {navItems.map(({ to, label }) => (
                 <Link
                   key={to}
                   to={to}
@@ -59,15 +62,14 @@ export function AppShell({ children }: { children: ReactNode }) {
                   className="nav-link"
                   activeProps={{ className: "nav-link nav-link-active" }}
                 >
-                  <Icon size={15} aria-hidden="true" />
                   {label}
                 </Link>
               ))}
             </nav>
 
-            <div className="ml-auto flex min-w-fit items-center gap-2 rounded-full border border-emerald-400/20 bg-emerald-400/5 px-2 py-1.5 pr-3 text-[10px] font-semibold uppercase tracking-[0.14em] text-safe">
+            <div className="ml-auto flex min-w-fit items-center gap-2 rounded-full border border-emerald-400/20 bg-emerald-400/5 px-2.5 py-1.5 pr-3 text-[10px] font-semibold uppercase tracking-[0.14em] text-safe">
               <span className="status-pulse" aria-hidden="true" />
-              <span className="hidden sm:inline">Simulation active</span>
+              <span className="hidden sm:inline">Simulation live</span>
             </div>
           </div>
         </div>
@@ -75,74 +77,88 @@ export function AppShell({ children }: { children: ReactNode }) {
       <main>{children}</main>
 
       <section className="mx-auto max-w-[1460px] px-4 pb-0 pt-8 md:px-4">
-        <div className="glass-panel overflow-hidden">
-          <div className="flex items-center justify-between border-b border-border px-5 py-4">
-            <h2 className="font-display text-sm font-semibold uppercase tracking-[0.12em] text-foreground">Limitations & Scope</h2>
-            <span className="system-label">Scope</span>
+        <div className="mb-4 text-center">
+          <div className="mb-2 flex items-center justify-center gap-2 text-[0.62rem] font-semibold uppercase tracking-[0.18em] text-primary/80">
+            <span className="h-px w-8 bg-primary/50" />
+            platform limits
+            <span className="h-px w-8 bg-primary/50" />
           </div>
+          <h2 className="font-display text-2xl font-semibold tracking-[-0.05em] text-foreground md:text-3xl">Limitations & Scope</h2>
+        </div>
 
-          <Accordion type="single" collapsible className="w-full">
-            <AccordionItem value="agents" className="border-b-0">
-              <AccordionTrigger className="px-5 text-left text-sm font-medium text-foreground hover:no-underline">
-                Agents in all scenarios are non-cooperative
-              </AccordionTrigger>
-              <AccordionContent className="px-5 pb-5 text-sm leading-6 text-muted-foreground">
-                Agents in all scenarios are non-cooperative — they follow fixed scripts and do not avoid the ego vehicle. Every scenario here is a worst-case test where the entire avoidance burden falls on the ego vehicle.
-              </AccordionContent>
-            </AccordionItem>
+        <div className="relative overflow-hidden rounded-[1.2rem] border border-white/8 bg-[linear-gradient(180deg,rgba(15,23,42,0.7),rgba(9,13,24,0.9))] shadow-[0_10px_30px_rgba(2,6,23,0.35)]">
+          <div className="rounded-[1.2rem] border border-white/5 bg-slate-950/40">
+            <div className="flex items-center justify-between border-b border-border/60 px-5 py-3.5">
+              <span className="text-[0.62rem] font-semibold uppercase tracking-[0.16em] text-muted-foreground">Current scope</span>
+              <span className="inline-flex items-center rounded-full border border-primary/10 bg-primary/5 px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[0.18em] text-primary/90">Scope</span>
+            </div>
 
-            <AccordionItem value="latency" className="border-b-0">
-              <AccordionTrigger className="px-5 text-left text-sm font-medium text-foreground hover:no-underline">
-                Worst-case replan latency is bounded, not unbounded
-              </AccordionTrigger>
-              <AccordionContent className="px-5 pb-5 text-sm leading-6 text-muted-foreground">
-                Worst-case replan latency (305.6ms in Dense Market) exceeds the 100ms budget, but is bounded — an expansion cap limits the search, and on failure the previous path is held for one cycle. A stale path for 100ms is safer than no path.
-              </AccordionContent>
-            </AccordionItem>
-
-            <AccordionItem value="matlab" className="border-b-0">
-              <AccordionTrigger className="px-5 text-left text-sm font-medium text-foreground hover:no-underline">
-                Base MATLAB implementation
-              </AccordionTrigger>
-              <AccordionContent className="px-5 pb-5 text-sm leading-6 text-muted-foreground">
-                Runs entirely on base MATLAB — no toolboxes required. Every algorithm is a standalone function that can become a Simulink MATLAB Function block directly.
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
+            <Accordion type="single" collapsible className="w-full">
+              {[
+                {
+                  value: "agents",
+                  title: "Agents in all scenarios are non-cooperative",
+                  icon: Users,
+                  description: "Agents in all scenarios are non-cooperative — they follow fixed scripts and do not avoid the ego vehicle. Every scenario here is a worst-case test where the entire avoidance burden falls on the ego vehicle.",
+                },
+                {
+                  value: "latency",
+                  title: "Worst-case replan latency is bounded, not unbounded",
+                  icon: Clock3,
+                  description: "Worst-case replan latency (305.6ms in Dense Market) exceeds the 100ms budget, but is bounded — an expansion cap limits the search, and on failure the previous path is held for one cycle. A stale path for 100ms is safer than no path.",
+                },
+                {
+                  value: "matlab",
+                  title: "Base MATLAB implementation",
+                  icon: Code2,
+                  description: "Runs entirely on base MATLAB — no toolboxes required. Every algorithm is a standalone function that can become a Simulink MATLAB Function block directly.",
+                },
+              ].map(({ value, title, description, icon: Icon }) => (
+                <AccordionItem key={value} value={value} className="border-b border-border/60 last:border-b-0">
+                  <AccordionTrigger className="group flex w-full items-center gap-3 px-5 py-4 text-left text-sm font-medium text-foreground transition-all duration-200 ease-out hover:no-underline data-[state=open]:bg-primary/[0.03] data-[state=open]:text-foreground">
+                    <span className="flex h-8 w-8 items-center justify-center rounded-md border border-primary/15 bg-primary/5 text-primary shadow-[inset_0_0_18px_rgba(125,211,252,0.06)] transition-all duration-200 ease-out group-hover:border-primary/30 group-hover:bg-primary/8">
+                      <Icon className="h-4 w-4" aria-hidden="true" />
+                    </span>
+                    <span className="flex-1 text-left">{title}</span>
+                  </AccordionTrigger>
+                  <AccordionContent className="px-5 pb-5 text-sm leading-6 text-muted-foreground">
+                    <div className="ml-11 rounded-xl border-l border-primary/15 pl-4 text-[0.93rem] text-muted-foreground/90">
+                      {description}
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </div>
         </div>
       </section>
 
-      <footer className="site-footer relative mt-8 overflow-hidden border-t border-border px-4 pb-6 pt-0 text-xs text-muted-foreground">
+      <footer className="site-footer relative mt-8 overflow-hidden border-t border-border px-4 pb-5 pt-0 text-xs text-muted-foreground">
         <div aria-hidden="true" className="site-footer__glow" />
-        <div aria-hidden="true" className="site-footer__spark group-[.site-footer]:opacity-100" />
-        <div className="mx-auto max-w-[1460px] py-8 md:py-10">
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            <div className="space-y-4">
+        <div aria-hidden="true" className="site-footer__spark" />
+
+        <div className="mx-auto max-w-[1460px] py-6 md:py-8">
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="space-y-2">
               <div className="flex items-center gap-3">
                 <span className="brand-mark"><RouteIcon aria-hidden="true" size={18} /></span>
-                <div>
-                  <div className="font-display text-sm font-bold tracking-[0.12em] text-foreground">MARGDRISHTI <span className="text-primary">AI</span></div>
-                </div>
+                <div className="font-display text-sm font-bold tracking-[0.12em] text-foreground">MARGDRISHTI <span className="text-primary">AI</span></div>
               </div>
               <div className="text-[0.62rem] font-medium uppercase tracking-[0.18em] text-muted-foreground">Autonomous Systems Lab</div>
-              <p className="max-w-xs text-sm leading-6 text-muted-foreground">
-                Measured closed-loop perception and planning for autonomous driving under real simulation conditions.
-              </p>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-2">
               <h3 className="font-display text-[0.62rem] font-semibold uppercase tracking-[0.16em] text-foreground">Navigate</h3>
-              <ul className="space-y-2 text-sm text-muted-foreground">
+              <ul className="space-y-1.5 text-sm text-muted-foreground">
                 {[
                   { to: "/", label: "Dashboard" },
                   { to: "/scenarios", label: "Scenarios" },
                   { to: "/perception", label: "Perception" },
                   { to: "/planning", label: "Planning" },
                   { to: "/performance", label: "Performance" },
-                  { to: "/", label: "Development Journey" },
                 ].map((item) => (
                   <li key={item.label}>
-                    <Link to={item.to} className="footer-link inline-flex items-center gap-1.5 rounded-full px-0 py-0.5 text-muted-foreground transition-all duration-200 ease-out">
+                    <Link to={item.to} className="footer-link inline-flex rounded-full px-0 py-0.5 text-muted-foreground transition-all duration-200 ease-out">
                       {item.label}
                     </Link>
                   </li>
@@ -150,28 +166,27 @@ export function AppShell({ children }: { children: ReactNode }) {
               </ul>
             </div>
 
-            <div className="space-y-4">
-              <h3 className="font-display text-[0.62rem] font-semibold uppercase tracking-[0.16em] text-foreground">Key Results</h3>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li>54% overall completion</li>
-                <li>32x prediction improvement</li>
-                <li>249x planning speedup</li>
-                <li>50 closed-loop runs</li>
+            <div className="space-y-2">
+              <h3 className="font-display text-[0.62rem] font-semibold uppercase tracking-[0.16em] text-foreground">Results</h3>
+              <ul className="space-y-1.5 text-sm text-muted-foreground">
+                <li>54% completion</li>
+                <li>32x prediction gain</li>
+                <li>249x planning speed</li>
               </ul>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-2">
               <h3 className="font-display text-[0.62rem] font-semibold uppercase tracking-[0.16em] text-foreground">Scope</h3>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li>Built entirely on base MATLAB — no toolboxes required</li>
-                <li>24 core source files, 7 test scripts</li>
-                <li>5 scenarios × 10 seeds</li>
+              <ul className="space-y-1.5 text-sm text-muted-foreground">
+                <li>Base MATLAB</li>
+                <li>5 scenarios</li>
+                <li>50 closed-loop runs</li>
               </ul>
             </div>
           </div>
 
-          <div className="mt-7 flex flex-col gap-2 border-t border-border pt-4 text-[0.68rem] uppercase tracking-[0.12em] text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
-            <span>SIH 2026 Prototype</span>
+          <div className="mt-6 flex flex-col gap-2 border-t border-border pt-3 text-[0.68rem] uppercase tracking-[0.12em] text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
+            <span className="text-foreground/85">© 2026 MARGDRISHTI AI</span>
             <span className="text-foreground/90">Measured, not estimated.</span>
           </div>
         </div>
@@ -180,14 +195,14 @@ export function AppShell({ children }: { children: ReactNode }) {
   );
 }
 
-export function PageIntro({ eyebrow, title, description, aside }: { eyebrow: string; title: ReactNode; description: string; aside?: ReactNode }) {
+export function PageIntro({ eyebrow, title, description, aside, titleClassName }: { eyebrow: string; title: ReactNode; description: string; aside?: ReactNode; titleClassName?: string }) {
   return (
     <div className="mb-8 flex flex-col items-center justify-between gap-5 border-b border-border pb-7 text-center">
       <div className="mx-auto max-w-3xl">
         <div className="mb-3 flex items-center justify-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-primary">
           <span className="h-px w-6 bg-primary" />{eyebrow}
         </div>
-        <h1 className="font-display text-3xl font-semibold tracking-[-0.05em] text-foreground md:text-5xl">{title}</h1>
+        <h1 className={['font-display block overflow-hidden text-3xl font-semibold tracking-[-0.05em] text-foreground md:text-5xl', titleClassName].filter(Boolean).join(' ')}>{title}</h1>
         <p className="mx-auto mt-3 max-w-2xl text-sm leading-6 text-muted-foreground md:text-base">{description}</p>
       </div>
       {aside ? <div className="mx-auto">{aside}</div> : null}
@@ -414,7 +429,7 @@ export function ScenarioVideoPlayer({
 
   if (videoError) {
     return (
-      <div className={`flex h-56 items-center justify-center border border-dashed border-border bg-secondary/30 ${className}`} onClick={onClick}>
+      <div className={`flex h-full min-h-[16rem] items-center justify-center border border-dashed border-border bg-secondary/30 ${className}`} onClick={onClick}>
         <div className="text-center">
           <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full border border-primary/40 bg-primary/10 text-primary">
             <CarFront size={18} aria-hidden="true" />
@@ -427,10 +442,10 @@ export function ScenarioVideoPlayer({
   }
 
   return (
-    <div className={`relative overflow-hidden ${className}`} onClick={onClick}>
+    <div className={`group relative h-full min-h-[16rem] overflow-hidden ${className}`} onClick={onClick}>
       <video
         src={src}
-        className="h-56 w-full object-cover"
+        className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03]"
         muted
         playsInline
         autoPlay={autoPlay}
@@ -438,7 +453,7 @@ export function ScenarioVideoPlayer({
         preload="metadata"
         onError={() => setVideoError(true)}
       />
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/10 to-transparent" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(148,163,184,0.12),transparent_28%),linear-gradient(to_top,rgba(2,6,23,0.8),rgba(2,6,23,0.08),transparent)]" />
       <div className="absolute inset-x-0 bottom-0 flex items-center justify-between gap-2 px-3 pb-3 pt-8">
         <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-slate-200">{label}</span>
         {active ? <span className="system-label system-label-safe">Playing</span> : <span className="system-label">Preview</span>}
