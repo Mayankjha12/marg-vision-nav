@@ -1,7 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Activity, Box, Camera, Gauge, Layers3, Radar, ScanSearch } from "lucide-react";
+import { Activity, Camera, Gauge, Layers3, Radar, ScanSearch } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
-import { AnimatedNumber, PageIntro, Panel } from "@/components/margdrishti";
+import { PageIntro, Panel } from "@/components/margdrishti";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 const sensorFusionData = [
   {
@@ -57,12 +58,16 @@ const sensorCards = [
   },
 ] as const;
 
-const objectCards = [
-  { name: "Car", count: "42 tracked" },
-  { name: "Two-wheeler", count: "18 tracked" },
-  { name: "Pedestrian", count: "14 tracked" },
-  { name: "Cattle", count: "06 tracked" },
-] as const;
+const objectClassesTracked = [
+  { class: "Car", radius: "1.6 m", appears: "highway merge" },
+  { class: "Bus / truck", radius: "2.2 m", appears: "urban intersection" },
+  { class: "Autorickshaw", radius: "1.5 m", appears: "village road, market, cattle crossing" },
+  { class: "Two-wheeler", radius: "0.7 m", appears: "village road, intersection, market" },
+  { class: "Pedestrian", radius: "0.6 m", appears: "all five" },
+  { class: "Animal", radius: "1.0 m", appears: "village road, market, cattle crossing" },
+  { class: "Cart", radius: "1.1 m", appears: "village road, market" },
+  { class: "Unknown", radius: "1.5 m", appears: "any classification failure" },
+];
 
 function NoiseBar({ label, value, max = 0.5, quality }: { label: string; value: number; max?: number; quality: string }) {
   const percent = Math.min((value / max) * 100, 100);
@@ -196,9 +201,9 @@ function PerceptionPage() {
             </div>
 
             <div className="mt-5 flex items-end gap-3">
-              <AnimatedNumber value="25.8" className="font-display text-4xl font-semibold tracking-[-0.06em] text-foreground md:text-5xl" decimals={1} />
+              <span className="font-display text-4xl font-semibold tracking-[-0.06em] text-foreground md:text-5xl">25.8</span>
               <div className="pb-2 text-2xl font-medium text-primary">→</div>
-              <AnimatedNumber value="6.4" className="font-display text-4xl font-semibold tracking-[-0.06em] text-foreground md:text-5xl" decimals={1} />
+              <span className="font-display text-4xl font-semibold tracking-[-0.06em] text-foreground md:text-5xl">6.4</span>
             </div>
 
             <p className="mt-4 text-sm leading-6 text-muted-foreground">
@@ -223,32 +228,27 @@ function PerceptionPage() {
           </motion.article>
         </div>
 
-        <Panel title="Detected Objects" label="Measured scene states" className="mt-5">
-          <div className="grid gap-4 p-5 md:grid-cols-[1fr_1.5fr] lg:p-7">
-            <div className="flex min-h-60 items-center justify-center rounded-[1.2rem] border border-dashed border-border bg-secondary/30">
-              <div className="text-center">
-                <ScanSearch className="mx-auto text-primary" size={40} />
-                <p className="mt-4 font-mono text-xs uppercase tracking-[0.15em] text-muted-foreground">Detection feed</p>
-              </div>
-            </div>
-
-            <div className="grid gap-3 sm:grid-cols-2">
-              {objectCards.map(({ name, count }, index) => (
-                <motion.div
-                  key={name}
-                  initial={{ opacity: 0, x: -12 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.32, delay: index * 0.06, ease: "easeOut" }}
-                  whileHover={reducedMotion ? undefined : { y: -4, scale: 1.01 }}
-                  className="glass-panel flex items-center gap-3 p-4"
-                >
-                  <span className="icon-well h-10 w-10"><Box size={17} aria-hidden="true" /></span>
-                  <div>
-                    <p className="text-sm font-semibold text-foreground">{name}</p>
-                    <p className="mt-1 font-mono text-[10px] uppercase text-muted-foreground">{count}</p>
-                  </div>
-                </motion.div>
-              ))}
+        <Panel title="Object classes tracked" label="Perception Classes" className="mt-5">
+          <div className="p-4 md:p-5">
+            <div className="overflow-hidden rounded-[1rem] border border-border/80 bg-slate-950/40">
+              <Table>
+                <TableHeader>
+                  <TableRow className="border-border/80 bg-slate-950/50">
+                    <TableHead className="px-4 py-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">Class</TableHead>
+                    <TableHead className="px-4 py-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">Assumed radius</TableHead>
+                    <TableHead className="px-4 py-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">Where it appears</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {objectClassesTracked.map((item) => (
+                    <TableRow key={item.class} className="border-border/80 text-sm text-foreground/85">
+                      <TableCell className="px-4 py-3 font-medium text-foreground">{item.class}</TableCell>
+                      <TableCell className="px-4 py-3 font-mono text-muted-foreground">{item.radius}</TableCell>
+                      <TableCell className="px-4 py-3 text-muted-foreground">{item.appears}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
             </div>
           </div>
         </Panel>
@@ -262,22 +262,47 @@ function PerceptionPage() {
           </div>
 
           <div className="grid gap-4 md:grid-cols-3">
-            {[{ label: "Detection accuracy", value: "92%", icon: Activity }, { label: "Range confidence", value: "40 m", icon: Layers3 }, { label: "Fusion latency", value: "12.4 ms", icon: Radar }].map(({ label, value, icon: Icon }, index) => (
-              <motion.div
-                key={label}
-                initial={{ opacity: 0, y: 18 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.35, delay: index * 0.08, ease: "easeOut" }}
-                whileHover={reducedMotion ? undefined : { y: -4, scale: 1.01 }}
-                className="glass-panel p-4"
-              >
-                <div className="flex items-center justify-between gap-3">
-                  <p className="text-[10px] uppercase tracking-[0.16em] text-muted-foreground">{label}</p>
-                  <span className="icon-well h-10 w-10"><Icon size={18} aria-hidden="true" /></span>
-                </div>
-                <AnimatedNumber value={value} className="mt-4 block font-display text-3xl font-semibold tracking-[-0.05em] text-foreground" decimals={value.includes("%") ? 0 : 1} />
-              </motion.div>
-            ))}
+            <motion.div
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.35, delay: 0, ease: "easeOut" }}
+              whileHover={reducedMotion ? undefined : { y: -4, scale: 1.01 }}
+              className="glass-panel p-4"
+            >
+              <div className="flex items-center justify-between gap-3">
+                <p className="text-[10px] uppercase tracking-[0.16em] text-muted-foreground">Detection accuracy</p>
+                <span className="icon-well h-10 w-10"><Activity size={18} aria-hidden="true" /></span>
+              </div>
+              <p className="mt-4 font-display text-base font-semibold text-foreground">Detection probability 0.90–0.96 (falls with range)</p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.35, delay: 0.08, ease: "easeOut" }}
+              whileHover={reducedMotion ? undefined : { y: -4, scale: 1.01 }}
+              className="glass-panel p-4"
+            >
+              <div className="flex items-center justify-between gap-3">
+                <p className="text-[10px] uppercase tracking-[0.16em] text-muted-foreground">Range confidence</p>
+                <span className="icon-well h-10 w-10"><Layers3 size={18} aria-hidden="true" /></span>
+              </div>
+              <p className="mt-4 font-display text-base font-semibold text-foreground">Lidar range 40 m, radar 120 m, camera 60 m</p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.35, delay: 0.16, ease: "easeOut" }}
+              whileHover={reducedMotion ? undefined : { y: -4, scale: 1.01 }}
+              className="glass-panel p-4"
+            >
+              <div className="flex items-center justify-between gap-3">
+                <p className="text-[10px] uppercase tracking-[0.16em] text-muted-foreground">Replan latency</p>
+                <span className="icon-well h-10 w-10"><Radar size={18} aria-hidden="true" /></span>
+              </div>
+              <p className="mt-4 font-display text-base font-semibold text-foreground">Mean replan latency — 10.7 ms</p>
+            </motion.div>
           </div>
         </div>
       </div>
