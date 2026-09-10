@@ -10,33 +10,79 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as PerceptionRouteImport } from './routes/perception'
+import { Route as PerformanceRouteImport } from './routes/performance'
+import { Route as PlanningRouteImport } from './routes/planning'
+import { Route as ScenariosRouteImport } from './routes/scenarios'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PerceptionRoute = PerceptionRouteImport.update({
+  id: '/perception',
+  path: '/perception',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PerformanceRoute = PerformanceRouteImport.update({
+  id: '/performance',
+  path: '/performance',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PlanningRoute = PlanningRouteImport.update({
+  id: '/planning',
+  path: '/planning',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ScenariosRoute = ScenariosRouteImport.update({
+  id: '/scenarios',
+  path: '/scenarios',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/perception': typeof PerceptionRoute
+  '/performance': typeof PerformanceRoute
+  '/planning': typeof PlanningRoute
+  '/scenarios': typeof ScenariosRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/perception': typeof PerceptionRoute
+  '/performance': typeof PerformanceRoute
+  '/planning': typeof PlanningRoute
+  '/scenarios': typeof ScenariosRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/perception': typeof PerceptionRoute
+  '/performance': typeof PerformanceRoute
+  '/planning': typeof PlanningRoute
+  '/scenarios': typeof ScenariosRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/perception' | '/performance' | '/planning' | '/scenarios'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/perception' | '/performance' | '/planning' | '/scenarios'
+  id:
+    | '__root__'
+    | '/'
+    | '/perception'
+    | '/performance'
+    | '/planning'
+    | '/scenarios'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  PerceptionRoute: typeof PerceptionRoute
+  PerformanceRoute: typeof PerformanceRoute
+  PlanningRoute: typeof PlanningRoute
+  ScenariosRoute: typeof ScenariosRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +94,43 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/perception': {
+      id: '/perception'
+      path: '/perception'
+      fullPath: '/perception'
+      preLoaderRoute: typeof PerceptionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/performance': {
+      id: '/performance'
+      path: '/performance'
+      fullPath: '/performance'
+      preLoaderRoute: typeof PerformanceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/planning': {
+      id: '/planning'
+      path: '/planning'
+      fullPath: '/planning'
+      preLoaderRoute: typeof PlanningRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/scenarios': {
+      id: '/scenarios'
+      path: '/scenarios'
+      fullPath: '/scenarios'
+      preLoaderRoute: typeof ScenariosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  PerceptionRoute: PerceptionRoute,
+  PerformanceRoute: PerformanceRoute,
+  PlanningRoute: PlanningRoute,
+  ScenariosRoute: ScenariosRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
