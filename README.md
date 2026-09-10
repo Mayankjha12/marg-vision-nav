@@ -52,6 +52,8 @@ MARGDRISHTI AI is a lane-independent, dynamic path planning and collision avoida
            |
            v
    Feedback Loop / Dynamic Replanning
+```
+## 7. Project Structure
 
 marg-vision-nav/
 ├── README.md
