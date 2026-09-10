@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { motion, useReducedMotion } from "framer-motion";
 import { Activity, Cpu, Gauge, Route as RouteIcon, ShieldCheck, Zap } from "lucide-react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { AnimatedNumber, PageIntro, Panel, SimulationVisual } from "@/components/margdrishti";
+import { PageIntro, Panel, SimulationVisual } from "@/components/margdrishti";
 
 export const Route = createFileRoute("/planning")({
   head: () => ({ meta: [
@@ -43,7 +43,9 @@ function AnimatedMetric({ label, value, detail, accent = "default" }: { label: s
           <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">{label}</p>
           <span className={`inline-flex h-2.5 w-2.5 rounded-full ${accent === "safe" ? "bg-safe" : accent === "warning" ? "bg-warning" : "bg-primary"}`} />
         </div>
-        <AnimatedNumber value={value} className="block font-display text-3xl font-semibold tracking-[-0.06em] text-foreground md:text-[2.5rem]" decimals={0} />
+        <span className="block font-display text-3xl font-semibold tracking-[-0.06em] text-foreground md:text-[2.5rem]">
+          {value}
+        </span>
         <p className="mt-3 text-sm leading-6 text-muted-foreground">{detail}</p>
       </div>
     </motion.article>
@@ -87,7 +89,7 @@ function PlanningPage() {
 
           <div className="grid gap-5 md:grid-cols-3">
             <AnimatedMetric label="Kinematic feasibility" value="4.1m" detail="Every search edge respects bicycle-model turning limits, so infeasible arcs are pruned before path scoring." accent="safe" />
-            <AnimatedMetric label="Planning page" value="0.329m" detail="Mean tracking error remains below the controller tolerance envelope across the measured closed-loop simulation set." accent="default" />
+            <AnimatedMetric label="Tracking Error" value="0.329m" detail="Mean tracking error remains below the controller tolerance envelope across the measured closed-loop simulation set." accent="default" />
             <AnimatedMetric label="Planner cascade" value="1.4ms" detail="Frenet is used for lane-level trajectories; Hybrid A* is reserved for dense, unstructured field cases with weak centerlines." accent="warning" />
           </div>
         </motion.div>
