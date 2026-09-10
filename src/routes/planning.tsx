@@ -1,9 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { motion, useReducedMotion } from "framer-motion";
-import { Activity, ArrowRight, Check, Cpu, Gauge, Route as RouteIcon, ShieldCheck, Sparkles, Zap } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
+import { Activity, Cpu, Gauge, Route as RouteIcon, ShieldCheck, Zap } from "lucide-react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { AnimatedNumber, PageIntro, Panel, Pipeline, SimulationVisual } from "@/components/margdrishti";
+import { AnimatedNumber, PageIntro, Panel, SimulationVisual } from "@/components/margdrishti";
 
 export const Route = createFileRoute("/planning")({
   head: () => ({ meta: [
@@ -28,7 +27,7 @@ function AnimatedMetric({ label, value, detail, accent = "default" }: { label: s
       transition={{ duration: 0.45, ease: "easeOut" }}
       whileHover={reducedMotion ? undefined : { y: -4 }}
       className="group relative overflow-hidden rounded-[1.2rem] border border-primary/10 bg-[radial-gradient(circle_at_var(--spotlight-x,_50%)_var(--spotlight-y,_50%),rgba(125,211,252,0.15),transparent_25%),linear-gradient(180deg,rgba(15,23,42,0.96),rgba(11,16,26,0.9))] p-5 shadow-[0_18px_42px_rgba(2,6,23,0.18)] transition-all duration-200 ease-out hover:border-primary/30"
-      onPointerMove={reducedMotion ? undefined : (event) => {
+      onPointerMove={reducedMotion ? undefined : (event: React.PointerEvent<HTMLElement>) => {
         const rect = event.currentTarget.getBoundingClientRect();
         const x = ((event.clientX - rect.left) / rect.width) * 100;
         const y = ((event.clientY - rect.top) / rect.height) * 100;
@@ -87,10 +86,11 @@ function PlanningPage() {
           </div>
 
           <div className="grid gap-5 md:grid-cols-3">
-  <AnimatedMetric label="Kinematic feasibility" value="4.1m" detail="Every search edge respects bicycle-model turning limits, so infeasible arcs are pruned before path scoring." accent="safe" />
-  <AnimatedMetric label="Planning page" value="0.329m" detail="Mean tracking error remains below the controller tolerance envelope across the measured closed-loop simulation set." accent="default" />
-  <AnimatedMetric label="Planner cascade" value="1.4ms" detail="Frenet is used for lane-level trajectories; Hybrid A* is reserved for dense, unstructured field cases with weak centerlines." accent="warning" />
-</div>
+            <AnimatedMetric label="Kinematic feasibility" value="4.1m" detail="Every search edge respects bicycle-model turning limits, so infeasible arcs are pruned before path scoring." accent="safe" />
+            <AnimatedMetric label="Planning page" value="0.329m" detail="Mean tracking error remains below the controller tolerance envelope across the measured closed-loop simulation set." accent="default" />
+            <AnimatedMetric label="Planner cascade" value="1.4ms" detail="Frenet is used for lane-level trajectories; Hybrid A* is reserved for dense, unstructured field cases with weak centerlines." accent="warning" />
+          </div>
+        </motion.div>
 
         <motion.div
           initial={{ opacity: 0, y: 18 }}
@@ -121,7 +121,7 @@ function PlanningPage() {
                 transition={{ duration: 0.45, ease: "easeOut", delay: index * 0.08 }}
                 whileHover={reducedMotion ? undefined : { y: -4 }}
                 className="group relative overflow-hidden rounded-[1.2rem] border border-border/80 bg-[radial-gradient(circle_at_var(--spotlight-x,_50%)_var(--spotlight-y,_50%),rgba(125,211,252,0.12),transparent_25%),linear-gradient(180deg,rgba(15,23,42,0.94),rgba(11,16,26,0.88))] p-5 shadow-[0_18px_38px_rgba(2,6,23,0.14)] transition-all duration-200 ease-out hover:border-primary/30"
-                onPointerMove={reducedMotion ? undefined : (event) => {
+                onPointerMove={reducedMotion ? undefined : (event: React.PointerEvent<HTMLElement>) => {
                   const rect = event.currentTarget.getBoundingClientRect();
                   const x = ((event.clientX - rect.left) / rect.width) * 100;
                   const y = ((event.clientY - rect.top) / rect.height) * 100;
@@ -245,7 +245,6 @@ function PlanningPage() {
                   <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">Planner decision</p>
                   <p className="mt-2 font-display text-xl font-semibold tracking-[-0.04em] text-foreground">Adaptive cascade</p>
                 </div>
-                <span className="inline-flex items-center gap-2 rounded-full border border-safe/30 bg-safe/10 px-2 py-1 text-[9px] font-semibold uppercase tracking-[0.16em] text-safe"><Check size={12} /> Active</span>
               </div>
               <div className="mt-4 grid gap-2 text-sm text-muted-foreground">
                 <div className="flex items-center gap-2"><ShieldCheck size={14} className="text-safe" /> Clearance envelope preserved</div>
@@ -255,24 +254,6 @@ function PlanningPage() {
             </motion.div>
           </motion.div>
         </div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 18 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.15 }}
-          transition={{ duration: 0.5, ease: "easeOut" }}
-          className="mt-6"
-        >
-          <div className="mb-4 flex items-center justify-between gap-3">
-            <div className="flex items-center gap-2 text-[0.62rem] font-semibold uppercase tracking-[0.18em] text-primary">
-              <span className="h-px w-8 bg-primary/50" />
-              Related modules
-            </div>
-            <span className="system-label">System view</span>
-          </div>
-
-         
-        </motion.div>
       </div>
     </div>
   );
