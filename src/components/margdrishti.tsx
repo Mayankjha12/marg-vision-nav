@@ -112,8 +112,69 @@ export function AppShell({ children }: { children: ReactNode }) {
         </div>
       </section>
 
-      <footer className="border-t border-border px-4 py-7 text-center text-xs text-muted-foreground">
-        Prototype visualization based on measured closed-loop simulation results.
+      <footer className="site-footer relative mt-8 overflow-hidden border-t border-border px-4 pb-6 pt-0 text-xs text-muted-foreground">
+        <div aria-hidden="true" className="site-footer__glow" />
+        <div aria-hidden="true" className="site-footer__spark group-[.site-footer]:opacity-100" />
+        <div className="mx-auto max-w-[1460px] py-8 md:py-10">
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="space-y-4">
+              <div className="flex items-center gap-3">
+                <span className="brand-mark"><RouteIcon aria-hidden="true" size={18} /></span>
+                <div>
+                  <div className="font-display text-sm font-bold tracking-[0.12em] text-foreground">MARGDRISHTI <span className="text-primary">AI</span></div>
+                </div>
+              </div>
+              <div className="text-[0.62rem] font-medium uppercase tracking-[0.18em] text-muted-foreground">Autonomous Systems Lab</div>
+              <p className="max-w-xs text-sm leading-6 text-muted-foreground">
+                Measured closed-loop perception and planning for autonomous driving under real simulation conditions.
+              </p>
+            </div>
+
+            <div className="space-y-4">
+              <h3 className="font-display text-[0.62rem] font-semibold uppercase tracking-[0.16em] text-foreground">Navigate</h3>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                {[
+                  { to: "/", label: "Dashboard" },
+                  { to: "/scenarios", label: "Scenarios" },
+                  { to: "/perception", label: "Perception" },
+                  { to: "/planning", label: "Planning" },
+                  { to: "/performance", label: "Performance" },
+                  { to: "/", label: "Development Journey" },
+                ].map((item) => (
+                  <li key={item.label}>
+                    <Link to={item.to} className="footer-link inline-flex items-center gap-1.5 rounded-full px-0 py-0.5 text-muted-foreground transition-all duration-200 ease-out">
+                      {item.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="space-y-4">
+              <h3 className="font-display text-[0.62rem] font-semibold uppercase tracking-[0.16em] text-foreground">Key Results</h3>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li>54% overall completion</li>
+                <li>32x prediction improvement</li>
+                <li>249x planning speedup</li>
+                <li>50 closed-loop runs</li>
+              </ul>
+            </div>
+
+            <div className="space-y-4">
+              <h3 className="font-display text-[0.62rem] font-semibold uppercase tracking-[0.16em] text-foreground">Scope</h3>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li>Built entirely on base MATLAB — no toolboxes required</li>
+                <li>24 core source files, 7 test scripts</li>
+                <li>5 scenarios × 10 seeds</li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="mt-7 flex flex-col gap-2 border-t border-border pt-4 text-[0.68rem] uppercase tracking-[0.12em] text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
+            <span>SIH 2026 Prototype</span>
+            <span className="text-foreground/90">Measured, not estimated.</span>
+          </div>
+        </div>
       </footer>
     </div>
   );
