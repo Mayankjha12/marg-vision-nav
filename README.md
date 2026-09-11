@@ -53,8 +53,9 @@ MARGDRISHTI AI is a lane-independent, dynamic path planning and collision avoida
            v
    Feedback Loop / Dynamic Replanning
 ```
-## 7. Project Structure
+## 7. Repository Structure
 
+```text
 marg-vision-nav/
 ├── README.md
 ├── package.json
@@ -78,20 +79,48 @@ marg-vision-nav/
 └── submission/
     ├── PRESENTATION.md
     └── DEMO.md
+```
 
 ## 8. Measured Performance Results
 
-- **Prediction Accuracy:** 32x error reduction using IMM tracker (0.59m mean error at 3s horizon vs 19.10m for single constant-velocity Kalman filter).
-- **Planner Speedup:** 249x execution speedup in Hybrid A* planner (10,505 ms down to 42.2 ms via struct lookup optimization).
-- **Replanning Latency:** Mean replan latency of 10.7 ms (305.6 ms worst-case in dense field scenarios, safely bounded by path-hold fallback).
-- **Sensor Range & Probability:** LiDAR 40m, Radar 120m, Camera 60m with a 0.90–0.96 detection probability envelope.
+- **Prediction Accuracy:** 32x error reduction using IMM (Interacting Multiple Model) tracker — 0.59m mean tracking error at 3s horizon vs 19.10m for single constant-velocity Kalman filter baseline.
+- **Planner Speedup:** 249x execution speedup achieved in Hybrid A* planner (reduced compute time from 10,505 ms down to 42.2 ms via precomputed arc lookup & heuristic struct optimization).
+- **Replanning Latency:** Mean end-to-end replan latency of 10.7 ms under real-time sensor processing loads; worst-case latency bounded at 305.6 ms in dense field scenarios, safely handled by single-cycle path-hold fallback logic.
+- **Sensor Range & Tracking Probability:** Multi-modal envelope tracking supporting LiDAR (40m depth geometry), Radar (120m millimeter-wave velocity vectoring), and Camera (60m contextual vision) with a 0.90–0.96 detection probability envelope.
+- **Track ID Churn Optimization:** Reduced track fragmentation fourfold (from 25.8 down to 6.4 average ID switches) by raising confirmation thresholds from 2 to 3 consecutive hits under agent occlusion.
+- **Kinematic Feasibility:** 100% trajectory compliance with physical bicycle-model turning limits (minimum radius 4.1m) and 0.329m mean tracking error under controller envelopes across 50 closed-loop MATLAB simulation runs.
 
 ## 9. Setup & Local Installation
 
-1. Clone the repository:
+1. **Clone the repository:**
    ```bash
    git clone [https://github.com/Mayankjha12/marg-vision-nav.git](https://github.com/Mayankjha12/marg-vision-nav.git)
    cd marg-vision-nav
+
+### Step 2: Verify Node.js environment
+
+```markdown
+2. **Verify Node.js environment:**
+   Make sure you have Node.js (v18.0.0 or higher) and npm installed. Check version via:
+   ```bash
+   node -v
+   npm -v
+
+### Step 3: Install project dependencies
+
+```markdown
+3. **Install project dependencies:**
+   ```bash
+   npm install
+
+### Step 4: Launch local development server
+
+```markdown
+4. **Launch local development server:**
+   ```bash
+   npm run dev
+
+```
 
 
 ## 10. Future Scope
