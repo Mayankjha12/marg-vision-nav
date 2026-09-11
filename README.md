@@ -92,34 +92,38 @@ marg-vision-nav/
 
 ## 9. Setup & Local Installation
 
-1. **Clone the repository:**
-   ```bash
-   git clone [https://github.com/Mayankjha12/marg-vision-nav.git](https://github.com/Mayankjha12/marg-vision-nav.git)
-   cd marg-vision-nav
+### Step 1: Clone the Repository
 
-### Step 2: Verify Node.js environment
+```bash
+git clone https://github.com/Mayankjha12/marg-vision-nav.git
+cd marg-vision-nav
+```
 
-```markdown
-2. **Verify Node.js environment:**
-   Make sure you have Node.js (v18.0.0 or higher) and npm installed. Check version via:
-   ```bash
-   node -v
-   npm -v
+### Step 2: Verify Node.js Environment
 
-### Step 3: Install project dependencies
+Make sure you have **Node.js (v18.0.0 or higher)** and **npm** installed.
 
-```markdown
-3. **Install project dependencies:**
-   ```bash
-   npm install
+```bash
+node -v
+npm -v
+```
 
-### Step 4: Launch local development server
+### Step 3: Install Project Dependencies
 
-```markdown
-4. **Launch local development server:**
-   ```bash
-   npm run dev
+```bash
+npm install
+```
 
+### Step 4: Launch Local Development Server
+
+```bash
+npm run dev
+```
+
+The application will be available at the local URL displayed in the terminal, typically:
+
+```text
+http://localhost:3000
 ```
 
 
