@@ -4,7 +4,7 @@ This repository contains the complete prototype dashboard, simulation architectu
 
 ## 1. Project Information
 
-- **Project Title:** MARGDRISHTI AI — Autonomous Driving Dem[cite: 1]
+- **Project Title:** MARGDRISHTI AI — Autonomous Driving Demo
 - **PS ID:** SIH26037
 - **PS Title:** Adaptive Path Planning and Collision Avoidance for Autonomous Vehicles on Unstructured Indian Roads
 - **Category:** Software
