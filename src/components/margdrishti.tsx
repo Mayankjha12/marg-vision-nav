@@ -27,10 +27,25 @@ const navItems = [
   { to: "/performance" as const, label: "Performance" },
 ];
 
+const revealEase = [0.22, 1, 0.36, 1] as const;
+
 export function AppShell({ children }: { children: ReactNode }) {
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
   const isPerformancePage = location.pathname === "/performance";
+  const reducedMotion = useReducedMotion();
+  const shouldAnimate = reducedMotion !== true;
+
+  // Soft fade-up when the section scrolls into view (off if reduced motion)
+  const reveal = (delay = 0) =>
+    shouldAnimate
+      ? {
+          initial: { opacity: 0, y: 16 },
+          whileInView: { opacity: 1, y: 0 },
+          viewport: { once: true, margin: "-40px" },
+          transition: { duration: 0.6, ease: revealEase, delay },
+        }
+      : {};
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -80,17 +95,25 @@ export function AppShell({ children }: { children: ReactNode }) {
 
       {/* Limitations section conditionally rendered only on /performance page */}
       {isPerformancePage && (
-        <section className="mx-auto max-w-[1460px] px-4 pb-0 pt-8 md:px-4">
-          <div className="mb-4 text-center">
+        <section className="mx-auto w-full max-w-[1080px] px-4 pb-0 pt-8 lg:px-6">
+          <motion.div {...reveal(0)} className="mb-4 text-center">
             <div className="mb-2 flex items-center justify-center gap-2 text-[0.62rem] font-semibold uppercase tracking-[0.18em] text-primary/80">
               <span className="h-px w-8 bg-primary/50" />
               platform limits
               <span className="h-px w-8 bg-primary/50" />
             </div>
             <h2 className="font-display text-2xl font-semibold tracking-[-0.05em] text-foreground md:text-3xl">Limitations & Scope</h2>
-          </div>
+          </motion.div>
 
-          <div className="relative overflow-hidden rounded-[1.2rem] border border-white/8 bg-[linear-gradient(180deg,rgba(15,23,42,0.7),rgba(9,13,24,0.9))] shadow-[0_10px_30px_rgba(2,6,23,0.35)]">
+          <motion.div
+            {...reveal(0.12)}
+            className="relative overflow-hidden rounded-[1.2rem] border border-white/8 bg-[linear-gradient(180deg,rgba(15,23,42,0.7),rgba(9,13,24,0.9))] shadow-[0_10px_30px_rgba(2,6,23,0.35)] transition-colors duration-300 hover:border-primary/25"
+          >
+            <span
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-x-0 top-0 z-10 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent"
+            />
+
             <div className="rounded-[1.2rem] border border-white/5 bg-slate-950/40">
               <div className="flex items-center justify-between border-b border-border/60 px-5 py-3.5">
                 <span className="text-[0.62rem] font-semibold uppercase tracking-[0.16em] text-muted-foreground">Current scope</span>
@@ -119,8 +142,8 @@ export function AppShell({ children }: { children: ReactNode }) {
                   },
                 ].map(({ value, title, description, icon: Icon }) => (
                   <AccordionItem key={value} value={value} className="border-b border-border/60 last:border-b-0">
-                    <AccordionTrigger className="group flex w-full items-center gap-3 px-5 py-4 text-left text-sm font-medium text-foreground transition-all duration-200 ease-out hover:no-underline data-[state=open]:bg-primary/[0.03] data-[state=open]:text-foreground">
-                      <span className="flex h-8 w-8 items-center justify-center rounded-md border border-primary/15 bg-primary/5 text-primary shadow-[inset_0_0_18px_rgba(125,211,252,0.06)] transition-all duration-200 ease-out group-hover:border-primary/30 group-hover:bg-primary/8">
+                    <AccordionTrigger className="group flex w-full items-center gap-3 px-5 py-4 text-left text-sm font-medium text-foreground transition-all duration-200 ease-out hover:bg-primary/[0.03] hover:no-underline data-[state=open]:bg-primary/[0.03] data-[state=open]:text-foreground">
+                      <span className="flex h-8 w-8 items-center justify-center rounded-md border border-primary/15 bg-primary/5 text-primary shadow-[inset_0_0_18px_rgba(125,211,252,0.06)] transition-all duration-200 ease-out group-hover:border-primary/30 group-hover:bg-primary/10">
                         <Icon className="h-4 w-4" aria-hidden="true" />
                       </span>
                       <span className="flex-1 text-left">{title}</span>
@@ -134,7 +157,7 @@ export function AppShell({ children }: { children: ReactNode }) {
                 ))}
               </Accordion>
             </div>
-          </div>
+          </motion.div>
         </section>
       )}
 
@@ -191,7 +214,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           </div>
 
           <div className="mt-6 flex flex-col gap-2 border-t border-border pt-3 text-[0.68rem] uppercase tracking-[0.12em] text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
-                        <span className="text-foreground/85">© 2026 MARGDRISHTI AI · Built by Team Server Down · SIH26037</span>
+            <span className="text-foreground/85">© 2026 MARGDRISHTI AI · Built by Team Server Down · SIH26037</span>
             <span className="text-foreground/90">Measured, not estimated.</span>
           </div>
         </div>
