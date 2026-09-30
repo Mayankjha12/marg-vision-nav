@@ -191,7 +191,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           </div>
 
           <div className="mt-6 flex flex-col gap-2 border-t border-border pt-3 text-[0.68rem] uppercase tracking-[0.12em] text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
-            <span className="text-foreground/85">© 2026 MARGDRISHTI AI</span>
+                        <span className="text-foreground/85">© 2026 MARGDRISHTI AI · Built by Team Server Down · SIH26037</span>
             <span className="text-foreground/90">Measured, not estimated.</span>
           </div>
         </div>
