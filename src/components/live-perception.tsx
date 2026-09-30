@@ -1,36 +1,3 @@
-/**
- * LivePerceptionDemo
- * ------------------------------------------------------------------
- * Additive component. Does NOT modify any existing file or data.
- *
- * Runs a real, in-browser object-detection model (TensorFlow.js +
- * COCO-SSD) over your existing scenario videos and draws live bounding
- * boxes on a canvas overlaid on the video. This proves the "Perception"
- * page is backed by something that actually runs, not just a static
- * table of numbers.
- *
- * SETUP (2 steps):
- *
- * 1. Add these two dependencies to package.json -> "dependencies":
- *      "@tensorflow/tfjs": "^4.22.0",
- *      "@tensorflow-models/coco-ssd": "^2.2.3"
- *    then run your package manager's install (npm install / bun install).
- *
- * 2. Drop this file at:  src/components/live-perception.tsx
- *    Then in src/routes/perception.tsx ONLY add two lines, nothing else:
- *      a) top of file, with the other imports:
- *           import { LivePerceptionDemo } from "@/components/live-perception";
- *      b) inside <PerceptionPage>, just before the final closing
- *         </div></div> (i.e. right after the last <Panel>...</Panel> block
- *         for "Object classes tracked", and before the "Data fidelity"
- *         section, or after it — either spot works), add:
- *           <LivePerceptionDemo />
- *
- * Nothing else in perception.tsx needs to change. All existing tables,
- * panels, and copy stay exactly as they are.
- * ------------------------------------------------------------------
- */
-
 import { useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { Loader2, Play, ScanEye } from "lucide-react";
@@ -43,12 +10,8 @@ type Detection = {
   bbox: [number, number, number, number]; // x, y, width, height (video-pixel space)
 };
 
-// Reuses the exact same video files already wired up on the Scenarios page —
-// no new assets needed.
 const scenarioNames = Object.keys(scenarioVideoPaths) as (keyof typeof scenarioVideoPaths)[];
 
-// Loose CoT class -> our own taxonomy label, so it reads like the rest of
-// the "Object classes tracked" table instead of raw COCO labels.
 const classLabelMap: Record<string, string> = {
   car: "Car",
   truck: "Bus / truck",
@@ -79,8 +42,6 @@ export function LivePerceptionDemo() {
   const [liveDetections, setLiveDetections] = useState<Detection[]>([]);
   const [fps, setFps] = useState(0);
 
-  // Load the model once, client-side only. SSR-safe: this effect never
-  // runs during server rendering, so nothing browser-only leaks into SSR.
   useEffect(() => {
     let cancelled = false;
 
@@ -106,7 +67,6 @@ export function LivePerceptionDemo() {
     };
   }, []);
 
-  // Detection loop, tied to the video's own playback via requestAnimationFrame.
   useEffect(() => {
     if (!isRunning) return;
     const video = videoRef.current;
@@ -129,8 +89,7 @@ export function LivePerceptionDemo() {
       }
 
       const now = performance.now();
-      // Throttle actual model inference to ~6-8 calls/sec — plenty for a
-      // demo, keeps the tab from pegging the CPU.
+     
       if (now - lastFrameTime > 130) {
         lastFrameTime = now;
         try {
@@ -168,7 +127,7 @@ export function LivePerceptionDemo() {
     video: HTMLVideoElement,
     detections: Detection[],
   ) {
-    // Keep canvas pixel size in sync with the video's rendered size.
+   
     const rect = video.getBoundingClientRect();
     if (canvas.width !== rect.width || canvas.height !== rect.height) {
       canvas.width = rect.width;
@@ -284,9 +243,9 @@ export function LivePerceptionDemo() {
                   disabled={modelStatus !== "ready"}
                   className="inline-flex items-center gap-2 rounded-full border border-primary/40 bg-primary/15 px-5 py-2.5 text-sm font-semibold text-primary transition-colors hover:bg-primary/25 disabled:cursor-not-allowed disabled:opacity-50"
                 >
-                  {modelStatus === "loading" && <Loader2 size={16} className="animate-spin" />}
+                                    {modelStatus === "loading" && <Loader2 size={16} className="animate-spin" />}
                   {modelStatus === "ready" && <Play size={16} />}
-                  {modelStatus === "loading" ? "Loading model…" : "Run live detection"}
+                  {modelStatus === "loading" ? "Loading detection model… (~2-3s, one time only)" : "Run live detection"}
                 </button>
               </div>
             ) : null}
