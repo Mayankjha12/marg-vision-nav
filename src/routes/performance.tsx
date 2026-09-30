@@ -38,7 +38,7 @@ const scenarioRows = [
     latMax: "108.3 ms",
     fail: "19.1%",
     split: "33% / 48%",
-    description: "High-speed traffic merging scenario.",
+    description: "6 agents, tight gap acceptance window — 1 collision from a late-merge decision.",
   },
   {
     name: "Dense market",
