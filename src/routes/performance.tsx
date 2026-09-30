@@ -122,17 +122,9 @@ function PerformancePage() {
                 <TableBody>
                   {scenarioRows.map((scenario) => (
                     <TableRow key={scenario.name} className="group">
-                      <TableCell className="font-medium text-foreground">
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <button type="button" className="text-left transition-colors hover:text-primary">
-                              {scenario.name}
-                            </button>
-                          </TooltipTrigger>
-                          <TooltipContent side="top" className="max-w-[280px] border border-white/10 bg-slate-950/95 text-xs leading-5 text-slate-200 shadow-2xl">
-                            {scenario.description}
-                          </TooltipContent>
-                        </Tooltip>
+                                            <TableCell className="font-medium text-foreground">
+                        <p className="text-foreground">{scenario.name}</p>
+                        <p className="mt-1 max-w-[260px] text-xs font-normal leading-5 text-muted-foreground">{scenario.description}</p>
                       </TableCell>
                       <TableCell>{scenario.completion}</TableCell>
                       <TableCell>{scenario.collisions}</TableCell>
@@ -152,17 +144,11 @@ function PerformancePage() {
               {scenarioRows.map((scenario) => (
                 <article key={scenario.name} className="rounded-2xl border border-border bg-card/60 p-4 shadow-[0_10px_30px_rgba(3,7,18,0.18)]">
                   <div className="flex items-center justify-between gap-3">
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <button type="button" className="text-left font-medium text-foreground transition-colors hover:text-primary">
-                          {scenario.name}
-                        </button>
-                      </TooltipTrigger>
-                      <TooltipContent side="top" className="max-w-[290px] border border-white/10 bg-slate-950/95 text-xs leading-5 text-slate-200 shadow-2xl">
-                        {scenario.description}
-                      </TooltipContent>
-                    </Tooltip>
+                                        <p className="font-medium text-foreground">{scenario.name}</p>
                     <span className="system-label system-label-safe">{scenario.completion}</span>
+                  </div>
+                  <p className="mt-2 text-xs leading-5 text-muted-foreground">{scenario.description}</p>
+                  <div className="hidden">
                   </div>
 
                   <dl className="mt-3 grid grid-cols-2 gap-2 text-sm">
