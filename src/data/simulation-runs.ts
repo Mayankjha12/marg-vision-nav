@@ -1,9 +1,4 @@
-Simulation runs · TS
-/**
- * Real per-run rows copied directly from:
- *   MATLAB_CODE/Adaptive_Planner 2/test/results.csv
- * All 50 rows (5 scenarios x 10 seeds), nothing invented.
- */
+
  
 export type SimulationRun = {
   scenario: "village_road" | "urban_intersection" | "highway_merge" | "dense_market" | "cattle_crossing";
