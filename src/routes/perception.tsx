@@ -3,7 +3,7 @@ import { Activity, Camera, Gauge, Layers3, Radar, ScanSearch } from "lucide-reac
 import { motion, useReducedMotion } from "framer-motion";
 import { PageIntro, Panel } from "@/components/margdrishti";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-
+import { LivePerceptionDemo } from "@/components/live-perception";
 const sensorFusionData = [
   {
     name: "Camera",
@@ -252,6 +252,8 @@ function PerceptionPage() {
             </div>
           </div>
         </Panel>
+
+        <LivePerceptionDemo />
 
         <div className="mt-5 rounded-[1.4rem] border border-border/70 bg-card/25 p-5 lg:p-6">
           <div className="mb-5 flex items-center justify-center">
