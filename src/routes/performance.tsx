@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { MetricCard, PageIntro, Panel } from "@/components/margdrishti";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-
+import { Bar, BarChart, CartesianGrid, ResponsiveContainer, XAxis, YAxis } from "recharts";
 const scenarioRows = [
   {
     name: "Village road",
@@ -102,6 +102,19 @@ function PerformancePage() {
           <p className="mt-3 max-w-3xl text-xs leading-6 text-muted-foreground">
             <span className="font-medium text-foreground">Bounded, not unbounded</span> — expansion cap + path-hold cascade prevents overrun.
           </p>
+
+                    <Panel title="Completion rate by scenario" label="Recharts · measured data" className="mt-6">
+            <div className="p-5 lg:p-6">
+              <ResponsiveContainer width="100%" height={260}>
+                <BarChart data={scenarioRows.map((s) => ({ name: s.name, completion: parseInt(s.completion) }))}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(148,163,184,0.15)" />
+                  <XAxis dataKey="name" tick={{ fill: "rgba(148,163,184,0.8)", fontSize: 11 }} />
+                  <YAxis tick={{ fill: "rgba(148,163,184,0.8)", fontSize: 11 }} unit="%" />
+                  <Bar dataKey="completion" fill="rgba(125,211,252,0.85)" radius={[6, 6, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </Panel>
 
           <Panel title="Scenario breakdown" label="Per scenario" className="mt-6">
             <div className="hidden overflow-hidden rounded-b-xl lg:block">
