@@ -4,7 +4,7 @@ import { motion, useInView } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { AnimatedNumber, MetricCard, PageIntro, Panel, ScenarioVideoPlayer, scenarioVideoPaths } from "@/components/margdrishti";
-
+import { RunReplayWidget } from "@/components/run-replay";
 function HeroSpotlightFrame({ children }: { children: React.ReactNode }) {
   const ref = useRef<HTMLDivElement | null>(null);
 
@@ -173,7 +173,8 @@ function DashboardPage() {
             />
           </div>
         </div>
-
+                <RunReplayWidget />
+        
         <div className="mt-4 mb-6">
           <div className="mb-5 flex justify-center">
             <div className="inline-flex items-center gap-3 rounded-full border border-primary/20 bg-primary/5 px-4 py-2 shadow-[0_0_20px_rgba(125,211,252,0.08)]">
